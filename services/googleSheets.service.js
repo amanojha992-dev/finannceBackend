@@ -20,7 +20,6 @@ async function getSheetsClient() {
   });
 }
 
-/* 🔁 Poll until GOOGLEFINANCE values are ready */
 async function waitForCalculation(
   sheets,
   count,
@@ -52,7 +51,6 @@ export async function getFundamentals(symbols) {
   const result = {};
   const missingSymbols = [];
 
-  /* 1️⃣ Check cache PER SYMBOL */
   for (const symbol of symbols) {
     const cached = getCachedFundamental(symbol);
     if (cached) {
@@ -62,12 +60,11 @@ export async function getFundamentals(symbols) {
     }
   }
 
-  /* 2️⃣ All cached → return immediately */
   if (missingSymbols.length === 0) {
     return result;
   }
 
-  /* 3️⃣ Fetch ONLY missing symbols */
+  
   const sheets = await getSheetsClient();
 
   const values = missingSymbols.map((symbol) => [
@@ -82,10 +79,8 @@ export async function getFundamentals(symbols) {
     requestBody: { values },
   });
 
-  /* 4️⃣ Wait until values are actually calculated */
   const res = await waitForCalculation(sheets, missingSymbols.length);
 
-  /* 5️⃣ Map rows → symbols + cache */
   res.data.values.forEach((row, i) => {
     const symbol = missingSymbols[i];
 
@@ -98,6 +93,6 @@ export async function getFundamentals(symbols) {
     result[symbol] = data;
   });
 
-  /* 6️⃣ Return merged (cached + fresh) */
+
   return result;
 }
