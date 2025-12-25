@@ -10,9 +10,8 @@ import stockRoute from "./routes/stock.route.js";
 dotenv.config();
 
 const allowedOrigins = [
-  "http://192.168.137.41:3000",
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
+  "https://finannce-frontend.vercel.app/",
+
   "http://localhost:3000",
 ];
 
